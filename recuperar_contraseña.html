@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página en Desarrollo</title>
+    <!-- Fuente de Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&family=Montserrat:wght@400&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f3f4f6;
+            color: #333;
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+        }
+        .message-container {
+            padding: 40px;
+            background: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            max-width: 600px;
+            width: 100%;
+        }
+        .message-container h1 {
+            font-size: 3em;
+            color: #ff6b6b;
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 20px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        .message-container p {
+            font-size: 1.2em;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        /* Animación */
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px #ff6b6b, 0 0 20px #ff6b6b, 0 0 30px #ff6b6b;
+            }
+            to {
+                text-shadow: 0 0 20px #ff6b6b, 0 0 30px #ff6b6b, 0 0 40px #ff6b6b;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="message-container">
+        <h1>Página en Desarrollo</h1>
+        <p>Esta página se encuentra actualmente en Desarrollo</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<?php
+include 'db.php';
+
+// Consulta SQL con JOIN para obtener los detalles de las membresías y el usuario correspondiente
+$sql = "
+    SELECT m.*, u.Nombre AS nombre_usuario 
+    FROM membresia m
+    JOIN usuario u ON m.id_usuario = u.id_usuario"; // Asegúrate de que los nombres de las columnas sean correctos
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$membresias = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membresías - Gestión de Membresías</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> 
+    <link rel="stylesheet" href="style/style.css">
+</head>
+<body>
+    <div class="sidebar" style="width: 290px;">
+        <h2>Gimnasio Body Fit</h2>
+        <ul>
+            <li><a href="index.php">Inicio</a></li>
+            <li><a href="crear_usuario.php">Agregar Usuario</a></li>
+            <li><a href="usuarios.php">Lista de Usuarios</a></li>
+            <li><a href="crear_membresia.php">Agregar Membresía</a></li>
+            <li><a href="membresias.php">Lista de Membresías</a></li>
+            <li><a href="pagos.php">Pagos</a></li>
+            <li><a href="asistencia.php">Asistencias</a></li>
+            <li><a href="clases.php">Clases</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h1>Lista de Membresías</h1>
+            <br>
+            <a href="crear_membresia.php"><button class="btn btn-success">Agregar Membresía</button></a>
+        </header>
+
+        <div class="container">
+            <table class="table table-striped" width="100%" cellspacing="0" cellpadding="10">
+                <tr>
+                    <th>ID</th>
+                    <th>Tipo</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
+                    <th>Usuario</th> 
+                    <th>Estado</th> <!-- Nueva columna para el estado -->
+                    <th>Acciones</th>
+                </tr>
+                <?php foreach($membresias as $membresia): ?>
+                <tr>
+                    <td><?= htmlspecialchars($membresia['id_membresia']); ?></td>
+                    <td><?= htmlspecialchars($membresia['Tipo']); ?></td>
+                    <td><?= htmlspecialchars($membresia['fecha_inicio']); ?></td>
+                    <td><?= htmlspecialchars($membresia['fecha_fin']); ?></td>
+                    <td><?= htmlspecialchars($membresia['nombre_usuario']); ?></td> <!-- Mostrar nombre del usuario -->
+                    <td><?= htmlspecialchars($membresia['estado']); ?></td> <!-- Mostrar estado de la membresía -->
+                    <td>
+                        <a class="btn btn-primary" href="editar_membresia.php?id=<?= urlencode($membresia['id_membresia']); ?>">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                            </svg>
+                        </a>
+                        <a class="btn btn-danger" href="eliminar_membresia.php?id=<?= urlencode($membresia['id_membresia']); ?>">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                            </svg>
+                        </a>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
